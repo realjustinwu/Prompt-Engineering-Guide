@@ -1,304 +1,304 @@
-# Basic Prompting
+# 基本提示
 
-In the previous guide, we introduced and gave a basic example of a prompt. 
+在上一篇指南中，我们介绍并给出了一个提示的基本例子。
 
-In this guide, we will provide more examples of how prompts are used and introduce key concepts that will be important for the more advanced guides. 
+在本指南中，我们将提供更多关于如何使用提示的例子，并介绍对更高级指南很重要的关键概念。
 
-Often, the best way to learn concepts is by going through examples. Below we cover a few examples of how well-crafted prompts can be used to perform all types of interesting and different tasks.
+通常，学习概念的最好方法是通过实例来学习。下面我们介绍几个例子，说明精心设计的提示语如何用于执行各种类型的有趣的不同任务。
 
-Topics:
-- [Text Summarization](#text-summarization)
-- [Information Extraction](#information-extraction)
-- [Question Answering](#question-answering)
-- [Text Classification](#text-classification)
-- [Conversation](#conversation)
-- [Code Generation](#code-generation)
-- [Reasoning](#reasoning)
-- [Python Notebooks](#python-notebooks)
-
----
-
-## Text Summarization
-One of the standard tasks in natural language generation is text summarization. Text summarization can include many different flavors and domains. One of the most promising applications of language models is the ability to summarize articles and concepts into quick and easy-to-read summaries. Let's try a basic summarization task using prompts.
-
-Let's say I am interested to learn about antibiotics, I could try a prompt like this:
-
-*Prompt:*
-```
-Explain antibiotics
-
-A:
-```
-
-*Output:*
-```
-Antibiotics are a type of medication used to treat bacterial infections. They work by either killing the bacteria or preventing them from reproducing, allowing the body’s immune system to fight off the infection. Antibiotics are usually taken orally in the form of pills, capsules, or liquid solutions, or sometimes administered intravenously. They are not effective against viral infections, and using them inappropriately can lead to antibiotic resistance.
-```
-
-The "A:" is an explicit prompt format that's used in question answering. I used it here to tell the model that there is an expected further. In this example, it's not clear how this is useful vs not using it but we will leave it that for later examples. Let's just assume that this is too much information and want to summarize it further. We can instruct the model to summarize into one sentence like so:
-
-*Prompt:*
-```
-Antibiotics are a type of medication used to treat bacterial infections. They work by either killing the bacteria or preventing them from reproducing, allowing the body’s immune system to fight off the infection. Antibiotics are usually taken orally in the form of pills, capsules, or liquid solutions, or sometimes administered intravenously. They are not effective against viral infections, and using them inappropriately can lead to antibiotic resistance.
-
-Explain the above in one sentence:
-```
-
-*Output:*
-```
-Antibiotics are medications used to treat bacterial infections by either killing the bacteria or stopping them from reproducing, but they are not effective against viruses and overuse can lead to antibiotic resistance.
-```
-
-Without paying too much attention to the accuracy of the output above, which is something we will touch on in a later guide, the model tried to summarize the paragraph in one sentence. You can get clever with the instructions but we will leave that for a later chapter. Feel free to pause here and experiment to see if you get better results.
-
----
-## Information Extraction
-While language models are trained to perform natural language generation and related tasks, it's also very capable of performing classification and a range of other natural language processing (NLP) tasks. 
-
-Here is an example of a prompt that extracts information from a given paragraph.
-
-*Prompt:*
-```
-Author-contribution statements and acknowledgements in research papers should state clearly and specifically whether, and to what extent, the authors used AI technologies such as ChatGPT in the preparation of their manuscript and analysis. They should also indicate which LLMs were used. This will alert editors and reviewers to scrutinize manuscripts more carefully for potential biases, inaccuracies and improper source crediting. Likewise, scientific journals should be transparent about their use of LLMs, for example when selecting submitted manuscripts.
-
-Mention the large language model based product mentioned in the paragraph above:
-```
-
-*Output:*
-```
-The large language model based product mentioned in the paragraph above is ChatGPT.
-```
-
-There are many ways we can improve the results above, but this is already very useful. 
-
-By now it should be obvious that you can ask the model to perform different tasks by simply instructing it what to do. That's a powerful capability that AI product builders are already using to build powerful products and experiences.
-
-
-Paragraph source: [ChatGPT: five priorities for research](https://www.nature.com/articles/d41586-023-00288-7) 
-
----
-## Question Answering
-
-One of the best ways to get the model to respond to specific answers is to improve the format of the prompt. As covered before, a prompt could combine instructions, context, input, and output indicators to get improved results. While these components are not required, it becomes a good practice as the more specific you are with instruction, the better results you will get. Below is an example of how this would look following a more structured prompt.
-
-*Prompt:*
-```
-Answer the question based on the context below. Keep the answer short. Respond "Unsure about answer" if not sure about the answer.
-
-Context: Teplizumab traces its roots to a New Jersey drug company called Ortho Pharmaceutical. There, scientists generated an early version of the antibody, dubbed OKT3. Originally sourced from mice, the molecule was able to bind to the surface of T cells and limit their cell-killing potential. In 1986, it was approved to help prevent organ rejection after kidney transplants, making it the first therapeutic antibody allowed for human use.
-
-Question: What was OKT3 originally sourced from?
-
-Answer:
-```
-
-*Output:*
-```
-Mice.
-```
-
-Context obtained from [Nature](https://www.nature.com/articles/d41586-023-00400-x).
+主题：
+- [文本总结](#文本总结)
+- [信息提取](#信息提取)
+- [回答问题](#回答问题)
+- [文本分类](#文本分类)
+- [对话](#对话)
+- [代码生成](#代码生成)
+- [推理](#推理)
+- [python-notebooks](#python-notebooks)
 
 ---
 
-## Text Classification
-So far, we have used simple instructions to perform a task. As a prompt engineer, you will need to get better at providing better instructions. But that's not all! You will also find that for harder use cases, just providing instructions won't be enough. This is where you need to think more about the context and the different elements you can use in a prompt. Other elements you can provide are `input data` or `examples`. 
+## 文本总结
+自然语言生成中的一个标准任务是文本总结。文本总结可以包括许多不同的风味和领域。语言模型最有前途的应用之一是能够将文章和概念总结为快速和易于阅读的摘要。让我们尝试一下使用提示语的基本总结任务。
 
-Let's try to demonstrate this by providing an example of text classification.
+假设我对了解抗生素感兴趣，我可以尝试这样的提示：
 
-*Prompt:*
+*提示:*
 ```
-Classify the text into neutral, negative or positive. 
+解释一下抗生素
 
-Text: I think the food was okay. 
-Sentiment:
-```
-
-*Output:*
-```
-Neutral
+答:
 ```
 
-We gave the instruction to classify the text and the model responded with `'Neutral'` which is correct. Nothing is wrong with this but let's say that what we really need is for the model to give the label in the exact format we want. So instead of `Neutral` we want it to return `neutral`. How do we achieve this. There are different ways to do this. We care about specificity here, so the more information we can provide the prompt the better results. We can try providing examples to specify the correct behavior. Let's try again:
-
-*Prompt:*
+*输出:*
 ```
-Classify the text into neutral, negative or positive. 
-
-Text: I think the vacation is okay.
-Sentiment: neutral 
-
-Text: I think the food was okay. 
-Sentiment:
+抗生素是一种用于治疗细菌感染的药物。它们的作用是杀死细菌或防止它们繁殖，使身体的免疫系统能够抵御感染。抗生素通常以药片、胶囊或液体溶液的形式口服，有时也可通过静脉注射。它们对病毒感染无效，而且不适当地使用它们会导致抗生素耐药。
 ```
 
-*Output:*
+这个 "答:" 是一种明确的提示格式，在回答问题时使用。我在这里用它来告诉模型，有一个预期的进一步。在这个例子中，不清楚这与不使用它有什么用处，但我们将把它留给以后的例子。让我们假设这些信息太多，想进一步总结一下。我们可以指示模型将其总结成一句话，就像这样：
+
+*提示:*
 ```
-neutral
+抗生素是一种用于治疗细菌感染的药物。它们的作用是杀死细菌或防止它们繁殖，使身体的免疫系统能够抵御感染。抗生素通常以药片、胶囊或液体溶液的形式口服，有时也可通过静脉注射。它们对病毒感染无效，而且不适当地使用它们会导致抗生素耐药。
+
+用一句话解释上述内容：
 ```
 
-Perfect! This time the model returned `neutral` which is the specific label I was looking for. It seems that the example provided in the prompt helped the model to be specific in its output. To highlight why sometimes being specific is important, checkout this example and spot the problem:
-
-*Prompt:*
+*输出:*
 ```
-Classify the text into nutral, negative or positive. 
-
-Text: I think the vacation is okay.
-Sentiment:
+抗生素是用于治疗细菌感染的药物，它可以杀死细菌或阻止细菌繁殖，但它们对病毒无效，过度使用会导致抗生素耐药性。
 ```
 
-*Output:*
+不用太注意上述输出的准确性，这是我们在以后的指南中会涉及到的，该模型试图用一句话来概括这段话。你可以巧妙地使用说明，但我们将把这个问题留给后面的章节。请随意在这里暂停，并进行实验，看看你是否能得到更好的结果。
+
+---
+## 信息提取
+虽然语言模型被训练来执行自然语言生成和相关任务，但它也很有能力执行分类和一系列其他自然语言处理（NLP）任务。
+
+下面是一个从给定段落中提取信息的提示的例子。
+
+*提示:*
 ```
-Neutral
+研究论文中的作者贡献声明和致谢应该清楚而具体地说明作者在准备稿件和分析时是否使用了ChatGPT等人工智能技术，以及使用的程度。他们还应该指出使用了哪些LLMs。这将提醒编辑和审稿人更仔细地审查稿件，以发现潜在的偏见、不准确和不当的来源。同样地，科学期刊在使用LLM方面也应该透明，例如在选择提交的稿件时。
+
+提到上面一段提到的基于大型语言模型的产品：
 ```
 
-What is the problem here?
+*输出:*
+```
+上段中提到的基于大型语言模型的产品是ChatGPT。
+```
+
+我们有很多方法可以改进上面的结果，但这已经非常有用了。
+
+现在应该很明显，你可以要求模型执行不同的任务，只需指示它做什么。这是一种强大的能力，人工智能产品建造者已经在使用这种能力来建造强大的产品和体验。
+
+段落来源： [ChatGPT：研究的五个重点](https://www.nature.com/articles/d41586-023-00288-7) 
+
+---
+## 回答问题
+
+让模型对具体答案做出反应的最好方法之一是改进提示的格式。如前所述，一个提示可以结合指示、背景、输入和输出指标来获得改进的结果。虽然这些成分不是必须的，但它成为一个很好的做法，因为你的指示越具体，你将得到更好的结果。下面是一个例子，说明在一个更有条理的提示之后，会出现什么样的情况。
+
+*提示:*
+```
+根据下面的内容回答问题。回答要简短。如果不确定答案，请回答 "不确定答案"。
+
+语境： 泰普利珠单抗的历史可以追溯到新泽西州一家名为Ortho Pharmaceutical的药物公司。在那里，科学家们产生了一种早期版本的抗体，被称为OKT3。该分子最初来自于小鼠，能够与T细胞表面结合并限制其细胞杀伤潜力。1986年，它被批准用于帮助防止肾脏移植后的器官排斥，使其成为第一个允许人类使用的治疗性抗体。
+
+问题： OKT3最初的来源是什么？
+
+回答：
+```
+
+*输出:*
+```
+OKT3最初的来源是小鼠。
+```
+
+语境取自[自然](https://www.nature.com/articles/d41586-023-00400-x)。
 
 ---
 
-## Conversation
-Perhaps one of the more interesting things you can achieve with prompt engineering is instructing the LLM system on how to behave, its intent, and its identity. This is particularly useful when you are building conversational systems like customer service chatbots. 
+## 文本分类
+到目前为止，我们已经使用了简单的指令来执行一项任务。作为一名提示工程师，你需要更好地提供更好的指示。但这还不是全部! 你还会发现，对于较难的用例，仅仅提供指示是不够的。这时，你需要更多地考虑上下文和你可以在提示中使用的不同元素。你可以提供的其他元素是 "输入数据 "或 "示例"。
 
-For instance, let's create a conversational system that's able to generate more technical and scientific responses to questions. Note how we are explicitly telling it how to behave through the instruction. This is sometimes referred to as *role prompting*.
+让我们试着通过提供一个文本分类的例子来证明这一点。
 
-*Prompt:*
+*提示:*
 ```
-The following is a conversation with an AI research assistant. The assistant tone is technical and scientific.
+将文本分类为中性、负面或正面。
 
-Human: Hello, who are you?
-AI: Greeting! I am an AI research assistant. How can I help you today?
-Human: Can you tell me about the creation of blackholes?
-AI:
+文本： 我认为食物还不错。
+情感：
 ```
 
-*Output:*
+*输出:*
 ```
-Sure! Black holes are regions of spacetime where the gravitational force is so strong that nothing, not even light, can escape from it. They are created when a very massive star dies and its core collapses in on itself, forming a singularity of infinite density. The intense gravity of the singularity pulls in all the matter and radiation around it, creating the black hole.
-```
-
-Our AI research assistant sounds a bit too technical, right? Okay, let's change this behavior and instruct the system to give more accessible answers. 
-
-*Prompt:*
-```
-The following is a conversation with an AI research assistant. The assistant answers should be easy to understand even by primary school students.
-
-Human: Hello, who are you?
-AI: Greeting! I am an AI research assistant. How can I help you today?
-Human: Can you tell me about the creation of black holes?
-AI: 
+中性
 ```
 
-*Output:*
+我们给出了对文本进行分类的指令，模型的反应是 "中性"，这是正确的。这没有什么不对，但是我们说，我们真正需要的是让模型以我们想要的确切格式给出标签。因此，我们希望它返回 "中立"，而不是 "中性"。我们如何实现这一点。有不同的方法来做到这一点。我们在这里关心的是特异性，所以我们能提供的提示信息越多，结果就越好。我们可以尝试提供例子来指定正确的行为。让我们再试一下：
+
+*提示:*
 ```
-Sure! Black holes are created when a very massive star runs out of fuel and collapses in on itself. The gravity of the star is so strong that nothing, not even light, can escape its pull. This creates a point in space-time with an intense gravitational force called a black hole.
+将文本分类为中性、负面或正面。
+
+文本： 我认为这个假期还不错。
+情感：中性 
+
+文本：我认为食物还可以： 我认为食物还可以。
+情感：中性：
 ```
 
-I think we made some progress. You can continue improving it. I am sure if you add more examples you might get even better results. 
+*输出:*
+```
+中性
+```
+
+很完美! 这一次，模型返回了`中性`，这是我要找的具体标签。看来，提示中提供的例子帮助模型在输出中变得具体。为了强调为什么有时具体化是很重要的，请查看这个例子并发现问题：
+
+*提示:*
+```
+将该文本分类为中性、消极型或积极型。
+
+文本： 我认为这个假期还不错。
+情绪：
+```
+
+*输出:*
+```
+中性
+```
+
+这里的问题是什么？
 
 ---
 
-## Code Generation
-One application where LLMs are quite effective is code generation. Copilot is a great example of this. There are a vast number of code-generation tasks you can perform with clever prompts. Let's look at a few examples below.
+## 会话
+也许你可以通过提示工程实现的更有趣的事情之一是指示LLM系统如何表现，它的意图和它的身份。当你在建立像客户服务聊天机器人这样的对话系统时，这一点特别有用。
 
-First, let's try a simple program that greets the user. 
+例如，让我们创建一个能够对问题产生更多技术和科学回应的对话系统。注意我们是如何通过指令明确地告诉它如何行事的。这有时被称为*角色提示*。
 
-*Prompt:*
+*提示:*
+```
+以下是与一位AI的对话。助理的语气是技术和科学的。
+
+人类：你好，你是谁？
+AI：你好! 我是一名AI。今天我能为您提供什么帮助？
+人类： 你能告诉我关于黑洞的产生吗？
+AI：
+```
+
+*输出:*
+```
+当然！黑洞是时空的区域，其引力如此之强，以至于没有任何东西，甚至是光，可以从其中逃脱。它们是在一个非常大的恒星死亡后，其核心向自身塌陷，形成一个密度无限的奇点时产生的。奇点的强大引力将其周围的所有物质和辐射拉入其中，形成黑洞。
+```
+
+我们的AI起来有点太技术化了，对吗？好吧，让我们改变这种行为，指示系统给出更容易理解的答案。
+
+*提示:*
+```
+下面是与一个AI的对话。助理的回答应该是很容易理解的，即使是小学生。
+
+人类：你好，你是谁？
+AI：你好! 我是一名AI。我今天能帮你什么忙吗？
+人类： 你能告诉我关于黑洞的产生吗？
+AI：
+```
+
+*输出:*
+```
+当然！黑洞是在一个非常巨大的恒星耗尽燃料并自我坍缩时产生的。恒星的引力是如此强大，以至于没有任何东西，甚至是光，可以逃脱它的牵引。这就在时空中形成了一个具有强大引力的点，称为黑洞。
+```
+
+我认为我们取得了一些进展。你可以继续改进它。我相信如果你增加更多的例子，你可能会得到更好的结果。
+
+---
+
+## 代码生成
+LLMs相当有效的一个应用是代码生成。Copilot是这方面的一个很好的例子。有大量的代码生成任务，你可以通过巧妙的提示来完成。让我们看一下下面的几个例子。
+
+首先，让我们试试一个简单的程序，向用户打招呼。
+
+*提示:*
 ```
 /*
-Ask the user for their name and say "Hello"
+询问用户的姓名并说 "你好"
 */
 ```
 
-*Output:*
+*输出:*
 ```
-let name = prompt("What is your name?");
-console.log(`Hello, ${name}!`);
+const name = prompt("请问您的名字是？");
+alert(`你好，${name}！`);
 ```
 
-You can see that we didn't even need to specify the language to use. 
+你可以看到，我们甚至不需要指定要使用的语言。
 
-Let's switch levels a bit. I want to show you how powerful LLMs can be with a little more effort in designing the prompts.
+让我们转换一下层次。我想向你展示，只要在设计提示时多花点心思，LLM就能变得多么强大。
 
-*Prompt:*
+*提示:*
 ```
 """
-Table departments, columns = [DepartmentId, DepartmentName]
-Table students, columns = [DepartmentId, StudentId, StudentName]
-Create a MySQL query for all students in the Computer Science Department
+departments 表, 列 = [DepartmentId, DepartmentName]
+students 表, 列 = [DepartmentId, StudentId, StudentName]
+为计算机科学系的所有学生创建一个MySQL查询
 """
 ```
 
-*Output:*
+*输出:*
 ```
-SELECT StudentId, StudentName 
-FROM students 
-WHERE DepartmentId IN (SELECT DepartmentId FROM departments WHERE DepartmentName = 'Computer Science');
+SELECT students.StudentName
+FROM students
+INNER JOIN departments ON students.DepartmentId = departments.DepartmentId
+WHERE departments.DepartmentName = '计算机科学系';
 ```
 
-This is very impressive. In this case, we provided data about the database schema and asked it to generate a valid MySQL query. 
+这是非常令人印象深刻的。在这种情况下，我们提供了关于数据库模式的数据，并要求它生成一个有效的MySQL查询。
 
 ---
 
-## Reasoning
-Perhaps one of the most difficult tasks for an LLM today requires some form of reasoning. Reasoning is one of the areas that I am most excited about due to the types of complex applications that can emerge from LLMs. 
+## 推理
+也许今天的法律硕士最困难的任务之一需要某种形式的推理。推理是我最感兴趣的领域之一，因为法律硕士可以产生复杂的应用类型。
 
-There have been some improvements in tasks involving mathematical capabilities. That said, it's important to note that current LLMs struggle to perform reasoning tasks so this requires even more advanced prompt engineering techniques. We will cover these advanced techniques in the next guide. For now, we will cover a few basic examples to show arithmetic capabilities.
+在涉及数学能力的任务方面，已经有了一些改进。也就是说，必须注意的是，目前的LLM在执行推理任务时很吃力，所以这需要更先进的提示工程技术。我们将在下一篇指南中介绍这些高级技术。现在，我们将介绍几个基本的例子来展示算术能力。
 
-*Prompt:*
+*提示:*
 ```
-What is 9,000 * 9,000?
-```
-
-*Output:*
-```
-81,000,000
+9,000*9,000是多少？
 ```
 
-Let's try something more difficult. 
-
-*Prompt:*
+*输出:*
 ```
-The odd numbers in this group add up to an even number: 15, 32, 5, 13, 82, 7, 1. 
-
-A: 
+9,000*9,000 = 81,000,000。
 ```
 
-*Output*
-```
-No, the odd numbers in this group add up to an odd number: 119.
-```
+让我们试试更难的东西。
 
-That's incorrect! Let's try to improve this by improving the prompt.
-
-*Prompt:*
+*提示:*
 ```
-The odd numbers in this group add up to an even number: 15, 32, 5, 13, 82, 7, 1. 
+这一组的奇数加起来是一个偶数：15，32，5，13，82，7，1。
 
-Solve by breaking the problem into steps. First, identify the odd numbers, add them, and indicate whether the result is odd or even. 
+答: 
 ```
 
-*Output:*
+*输出*
 ```
-Odd numbers: 15, 5, 13, 7, 1
-Sum: 41 
-41 is an odd number.
+不，这一组的奇数加起来是一个奇数：119。
 ```
 
-Much better, right? By the way, I tried this a couple of times and the system sometimes fails. If you provide better instruction combined with examples, it might help get more accurate results.
+这是不正确的! 让我们试着通过改进提示来改善这个问题。
 
-We will continue to include more examples of common applications in this section of the guide.
+*提示:*
+```
+这一组的奇数加起来是一个偶数：15，32，5，13，82，7，1。
 
-In the upcoming guides, we will cover even more advanced prompt engineering concepts for improving performance on all these and more difficult tasks.
+把问题分成几个步骤来解决。首先，找出奇数，将它们相加，并指出结果是奇数还是偶数。
+```
+
+*输出:*
+```
+奇数： 15, 5, 13, 7, 1
+总和：41 
+41是一个奇数。
+```
+
+好多了，对吗？顺便说一下，我试了几次，系统有时会失败。如果你提供更好的指导并结合实例，可能有助于获得更准确的结果。
+
+我们将继续在指南的这一部分包括更多的常见应用实例。
+
+在即将出版的指南中，我们将涵盖更多先进的提示工程概念，以提高所有这些和更多困难任务的性能。
 
 ---
-## Python Notebooks
+## Python notebooks
 
-|Description|Notebook|
+|描述|notebooks|
 |--|--|
-|Learn how to perform many different types of common tasks using the `openai` and `LangChain` library|[Getting Started with Prompt Engineering](../notebooks/pe-lecture.ipynb)|
+|学习如何使用 "openai "和 "LangChain "库执行许多不同类型的常见任务|[提示工程入门](.../notebooks/pe-lecture.ipynb)|
 
 ---
 
-[Previous Section (Prompts Introduction)](./prompts-intro.md)
+[上一节（提示语介绍）](./prompts-intro.md)
 
-[Next Section (Advanced Prompting Techniques)](./prompts-advanced-usage.md)
+[下一节（高级提示技术）](./prompts-advanced-usage.md)
