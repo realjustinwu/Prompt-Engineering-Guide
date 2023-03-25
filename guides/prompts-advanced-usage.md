@@ -11,8 +11,8 @@
 -   [思路链提示](#思路链提示chain-of-thought-prompting)
 -   [零提示思路链](#思路链提示chain-of-thought-prompting)
 -   [自我一致性](#自我一致性self-consistency)
--   [生成知识提示](https://chat.openai.com/chat/e9301209-1239-4fc2-9e8d-bef9e6b7aeb1#%E7%94%9F%E6%88%90%E7%9F%A5%E8%AF%86%E6%8F%90%E7%A4%BA)
--   [自动提示工程师](#automatic-prompt-engineer-ape)
+-   [生成知识提示](#生成知识提示generated-knowledge-prompting)
+-   [自动提示工程师](#自动提示工程师automatic-prompt-engineer-ape)
 
 
 
@@ -309,7 +309,7 @@
 计算最终答案涉及几个步骤（详情请查阅论文），但为了简单起见，我们可以看到已经有一个多数人的答案出现，所以这基本上会成为最终答案。
 
 ---
-## 产生的知识提示(Generated Knowledge Prompting)
+## 生成知识提示(Generated Knowledge Prompting)
 
 LLMs不断被改进，其中一个流行的技术包括能够纳入知识或信息，以帮助模型做出更准确的预测。
 
