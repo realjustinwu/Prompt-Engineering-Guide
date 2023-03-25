@@ -14,7 +14,7 @@
 -   💬 ChatGPT 提示工程指南即将推出！
 -   🔥 我们在 2023 年 2 月 21 日上的 Hacker News 中获得了第一名
 -   🎉 提示工程讲座已经上线 [这里](https://youtu.be/dOxUroR57xs)
--   🎓 我们正在创建一系列综合指南 [这里](#guides)
+-   🎓 我们正在创建一系列综合指南 [这里](#指南)
 
 [加入我们的 Discord](https://discord.gg/SKgkVT8BGJ)
 
