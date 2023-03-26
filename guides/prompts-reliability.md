@@ -1,174 +1,173 @@
-## Reliability
+## 可靠性
 
-We have seen already how effective well-crafted prompts can be for various tasks using techniques like few-shot learning. As we think about building real-world applications on top of LLMs, it becomes crucial to think about the reliability of these language models. This guide focuses on demonstrating effective prompting techniques to improve the reliability of LLMs like GPT-3. Some topics of interest include generalizability, calibration, biases, social biases, and factuality to name a few.
+我们已经看到了精心设计的提示语对于使用少量学习等技术的各种任务是多么有效。当我们考虑在LLM之上构建真实世界的应用时，考虑这些语言模型的可靠性变得至关重要。本指南的重点是展示有效的提示技术，以提高GPT-3等LLM的可靠性。一些感兴趣的主题包括可概括性、校准、偏见、社会偏见和事实性，仅举几例。
 
-**Note that this section is under heavy development.**
+**请注意，这部分内容正在大力开发中**。
 
-Topics:
-- [Factuality](#factuality)
-- [Biases](#biases)
+主题：
+- [事实性](#事实性)
+- [偏见](#biases)
 - ...
 
 ---
-## Factuality
-LLMs have a tendency to generate responses that sounds coherent and convincing but can sometimes be made up. Improving prompts can help improve the model to generate more accurate/factual responses and reduce the likelihood to generate inconsistent and made up responses. 
+## 事实性
+LLMs有一种倾向，即产生听起来连贯和有说服力的回答，但有时可能是编造的。改进提示可以帮助改进模型，使其产生更准确/事实的回答，并减少产生不一致和编造的回答的可能性。
 
-Some solutions might include:
-- provide ground truth (e.g., related article paragraph or Wikipedia entry) as part of context to reduce the likelihood of the model producing made up text.
-- configure the model to produce less diverse responses by decreasing the probability parameters and instructing it to admit (e.g., "I don't know") when it doesn't know the answer. 
-- provide in the prompt a combination of examples of questions and responses that it might know about and not know about
+一些解决方案可能包括
+- 提供基本事实（例如，相关的文章段落或维基百科条目）作为背景的一部分，以减少模型产生编造文本的可能性。
+- 通过降低概率参数和指示它在不知道答案时承认（例如，"我不知道"）来配置模型，使其产生较少的不同反应。
+- 在提示中提供它可能知道和不知道的问题和回答的例子的组合
 
-Let's look at a simple example:
+我们来看看一个简单的例子：
 
-*Prompt:*
+*提示:*
 ```
-Q: What is an atom? 
-A: An atom is a tiny particle that makes up everything. 
+问：什么是原子？
+答：原子是一种微小的粒子，它构成了一切。
 
-Q: Who is Alvan Muntz? 
+问：Alvan Muntz是谁？
 A: ? 
 
-Q: What is Kozar-09? 
+问：Kozar-09是什么？
 A: ? Q: 
 
-How many moons does Mars have? 
-A: Two, Phobos and Deimos. 
+火星有多少个卫星？
+答：两个，火卫一和火卫二。
 
-Q: Who is Neto Beto Roberto? 
+问：Neto Beto Roberto是谁？
 ```
 
-*Output:*
+*输出：*
 ```
 A: ?
 ```
 
-I made up the name "Neto Beto Roberto" so the model is correct in this instance. Try to change the question a bit and see if you can get it to work. There are different ways you can improve this further based on all that you have learned so far.
+我编造了 "Neto Beto Roberto "这个名字，所以这个模型在这个例子中是正确的。试着改变一下问题，看看你是否能让它发挥作用。根据你目前学到的所有知识，你可以用不同的方法进一步改进。
 
 ---
-## Biases
-LLMs can produce problematic generations that can potentially be harmful and display biases that could deteriorate the performance of the model on downstream tasks. Some of these can be mitigates through effective prompting strategies but might require more advanced solutions like moderation and filtering. 
+## 偏见
+LLMs可能会产生有问题的世代，这可能是有害的，并显示出可能会恶化模型在下游任务中的表现的偏见。其中一些可以通过有效的提示策略来缓解，但可能需要更高级的解决方案，如节制和过滤。
 
-### Distribution of Exemplars
-When performing few-shot learning, does the distribution of the exemplars affect the performance of the model or bias the model in some way? We can perform a simple test here.
+### 例子的##分布
+当进行少量的学习时，范例的分布是否会影响模型的性能或以某种方式偏向模型？我们可以在这里进行一个简单的测试。
 
-*Prompt:*
+*提示:*
 ```
-Q: I just got the best news ever!
-A: Positive
+问：我刚刚得到了一个最好的消息!
+答：积极的
 
-Q: We just got a raise at work!
-A: Positive
+问：我们刚刚在工作中得到了加薪!
+答：积极的
 
-Q: I'm so proud of what I accomplished today.
-A: Positive
+问：我为我今天的成就感到非常自豪。
+答：积极的
 
-Q: I'm having the best day ever!
-A: Positive
+问：我有史以来最棒的一天!
+答：积极的
 
-Q: I'm really looking forward to the weekend.
-A: Positive
+问：我真的很期待周末的到来。
+答：积极的
 
-Q: I just got the best present ever!
-A: Positive
+问：我刚刚收到了有史以来最好的礼物!
+答：积极的
 
-Q: I'm so happy right now.
-A: Positive
+问：我现在很高兴。
+答：积极的
 
-Q: I'm so blessed to have such an amazing family.
-A: Positive
+问：我很庆幸有这样一个了不起的家庭。
+答：积极的
 
-Q: The weather outside is so gloomy.
-A: Negative
+问：外面的天气太阴沉了。
+答：消极的
 
-Q: I just got some terrible news.
-A: Negative
+问：我刚刚得到一些可怕的消息。
+答：消极的
 
-Q: That left a sour taste.
+问：这留下了一个酸溜溜的味道。
 A:
 ```
 
-*Output:*
+*输出：*
 ```
-Negative
+负面的
 ```
 
-In the example above, it seems that the distribution of exemplars doesn't bias the model. This is good. Let's try another example with a harder text to classify and let's see how the model does:
+在上面的例子中，似乎典范的分布并没有使模型出现偏差。这很好。让我们尝试另一个例子，用更难的文本进行分类，让我们看看模型的表现如何：
 
-*Prompt:*
+*提示：*
 ```
-Q: The food here is delicious!
-A: Positive 
+问：这里的食物很好吃!
+答：积极的 
 
-Q: I'm so tired of this coursework.
-A: Negative
+问：我对这个课程作业感到很厌倦。
+答：消极的
 
-Q: I can't believe I failed the exam.
-A: Negative
+问：我真不敢相信我没能通过考试。
+答：消极的
 
-Q: I had a great day today!
-A: Positive 
+问：我今天过的很好!
+答：积极的 
 
-Q: I hate this job.
-A: Negative
+问：我讨厌这份工作。
+答：消极的
 
-Q: The service here is terrible.
-A: Negative
+问：这里的服务很糟糕。
+答：消极的
 
-Q: I'm so frustrated with my life.
-A: Negative
+问：我对我的生活感到很沮丧。
+答：否定的
 
-Q: I never get a break.
-A: Negative
+问：我从来没有得到过休息。
+答：否定的
 
-Q: This meal tastes awful.
-A: Negative
+问：这顿饭太难吃了。
+答：否定的
 
-Q: I can't stand my boss.
-A: Negative
+问：我无法忍受我的老板。
+答：否定的
 
-Q: I feel something.
+问：我有感觉。
 A:
 ```
 
-*Output:*
+*输出：*
 ```
-Negative
+负面的
 ```
 
-While that last sentence is somewhat subjective, I flipped the distribution and instead used 8 positive examples and 2 negative examples and then tried the same exact sentence again. Guess what the model responded? It responded "Positive". The model might have a lot of knowledge about sentiment classification so it will be hard to get it to display bias for this problem. The advice here is to avoid skewing the distribution and instead provide more balanced number of examples for each label. For harder tasks where the model doesn't have too much knowledge of, it will likely struggle more. 
+虽然最后一句话有些主观，但我翻转了分布，而是用了8个正面的例子和2个负面的例子，然后再次尝试了同样的确切句子。猜猜看，模型的反应是什么？它的回答是 "积极的"。该模型可能有很多关于情感分类的知识，所以很难让它对这个问题显示出偏见。这里的建议是避免偏斜分布，而是为每个标签提供更平衡的例子数量。对于模型没有太多知识的困难任务，它可能会更加挣扎。
 
+### 例子的顺序
+在进行少量学习时，顺序是否会影响模型的性能或以某种方式偏向于模型？
 
-### Order of Exemplars
-When performing few-shot learning, does the order affect the performance of the model or bias the model in some way?
-
-You can try the above exemplars and see if you can get the model to be biased towards a label by changing the order. The advice is to randomly order exemplars. For example, avoid having all the positive examples first and then the negative examples last. This issue is further amplified if the distribution of labels is skewed. Always ensure to experiment a lot to reduce this type of biasness.
+你可以试试上面的例子，看看你是否可以通过改变顺序让模型偏向于某个标签。建议是随机地对典范进行排序。例如，避免将所有正面的例子放在前面，然后将负面的例子放在最后。如果标签的分布是倾斜的，这个问题会被进一步放大。一定要确保进行大量的实验以减少这种类型的偏差。
 
 ---
 
-Other upcoming topics:
-- Perturbations
-- Spurious Correlation
-- Domain Shift
-- Toxicity
-- Hate speech / Offensive content
-- Stereotypical bias 
-- Gender bias
-- Coming soon!
-- Red Teaming
+其他即将到来的主题：
+- 扰动
+- 虚假的相关性
+- 领域转移
+- 毒性
+- 仇恨言论/攻击性内容
+- 陈规定型的偏见 
+- 性别偏见
+- 即将推出!
+- 红队
 
 ---
-## References
+## 参考文献
 - [Constitutional AI: Harmlessness from AI Feedback](https://arxiv.org/abs/2212.08073) (Dec 2022)
-- [Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?](https://arxiv.org/abs/2202.12837) (Oct 2022)
-- [Prompting GPT-3 To Be Reliable](https://arxiv.org/abs/2210.09150) (Oct 2022)
+- [重新思考演示的作用：是什么让情境学习发挥作用？](https://arxiv.org/abs/2202.12837) (2022年10月)
+- [提示GPT-3是可靠的](https://arxiv.org/abs/2210.09150) (Oct 2022)
 - [On the Advance of Making Language Models Better Reasoners](https://arxiv.org/abs/2206.02336) (Jun 2022)
-- [Unsolved Problems in ML Safety](https://arxiv.org/abs/2109.13916) (Sep 2021)
-- [Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned](https://arxiv.org/abs/2209.07858) (Aug 2022)
-- [StereoSet: Measuring stereotypical bias in pretrained language models](https://aclanthology.org/2021.acl-long.416/) (Aug 2021)
-- [Calibrate Before Use: Improving Few-Shot Performance of Language Models](https://arxiv.org/abs/2102.09690v2) (Feb 2021)
-- [Techniques to improve reliability - OpenAI Cookbook](https://github.com/openai/openai-cookbook/blob/main/techniques_to_improve_reliability.md)
+- [ML安全中未解决的问题](https://arxiv.org/abs/2109.13916) (Sep 2021)
+- [Red Teaming Language Models to Reduce Harms： 方法、规模化行为和经验教训](https://arxiv.org/abs/2209.07858) (2022年8月)
+- [StereoSet：测量预训练语言模型的定型偏见](https://aclanthology.org/2021.acl-long.416/) (2021年8月)
+- [使用前的校准：提高语言模型的几率性能](https://arxiv.org/abs/2102.09690v2) (2021年2月)
+- [提高可靠性的技术--OpenAI Cookbook](https://github.com/openai/openai-cookbook/blob/main/techniques_to_improve_reliability.md)
 
 ---
-[Previous Section (Adversarial Prompting)](./prompts-adversarial.md)
+[上一节（对抗性提示）](./prompts-adversarial.md)
 
-[Next Section (Miscellaneous)](./prompts-miscellaneous.md)
+[下一节（杂项）](./prompts-miscellaneous.md)
